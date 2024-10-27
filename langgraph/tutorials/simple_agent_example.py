@@ -83,19 +83,19 @@ checkpointer = MemorySaver()
 # Note that we're (optionally) passing the memory when compiling the graph
 app = workflow.compile(checkpointer=checkpointer)
 
-# app はCompiledStateGraph型で、Runnableを継承している。
-print(f"[DEBUG] type(app): {type(app)}") # <class 'langgraph.graph.state.CompiledStateGraph'>
+# # app はCompiledStateGraph型で、Runnableを継承している。
+# print(f"[DEBUG] type(app): {type(app)}") # <class 'langgraph.graph.state.CompiledStateGraph'>
 
-# # Use the Runnable
-# final_state = app.invoke(
-#     {"messages": [HumanMessage(content="what is the weather in sf")]},
-#     config={"configurable": {"thread_id": 42}}
-# )
-# print(final_state["messages"][-1].content)
-# # output: The current weather in San Francisco is 60 degrees and foggy.
+# Use the Runnable
+final_state = app.invoke(
+    {"messages": [HumanMessage(content="what is the weather in sf")]},
+    config={"configurable": {"thread_id": 42}}
+)
+print(final_state["messages"][-1].content)
+# output: The current weather in San Francisco is 60 degrees and foggy.
 
 # print(f"[DEBUG] type(final_state): {type(final_state)}") # <class 'langgraph.pregel.io.AddableValuesDict'>
-# # print(f"[DEBUG] final_state: {final_state}")
+# print(f"[DEBUG] final_state: {final_state}")
 
 # final_stateの中身
 """

@@ -1,6 +1,6 @@
-## Langgraph チュートリアル
+## LangGraph チュートリアル
 
-Langgraph に関するチュートリアルを実行するためのソースファイル群です。
+LangGraph に関するチュートリアルを実行するためのソースファイル群です。
 
 参考：[LangGraph](https://langchain-ai.github.io/langgraph/)
 
@@ -16,7 +16,7 @@ OPENAI_API_KEY="<your-openai-api-key>"
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
 LANGCHAIN_API_KEY="<your-langsmith-api-key>"
-LANGCHAIN_PROJECT="agent-tutorial"
+LANGCHAIN_PROJECT="langgraph-tutorial"
 ```
 
 2. `Dockerfile` を使用してビルドします。
