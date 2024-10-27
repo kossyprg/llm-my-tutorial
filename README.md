@@ -1,6 +1,6 @@
-# LangChain 学習用スクリプト
+# LLM 学習用スクリプト
 
-このリポジトリは公式の [langchain](https://python.langchain.com/docs/introduction/) ドキュメントをもとにした、個人的な学習用スクリプトです。
+このリポジトリは公式の [langchain](https://python.langchain.com/docs/introduction/) ドキュメントなどをもとにした、個人的な学習用スクリプトです。
 
 ## 使用方法
 
