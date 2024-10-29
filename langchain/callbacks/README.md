@@ -6,13 +6,13 @@ langchainに書かれているCallbacksに関するチュートリアルを実�
 
 ## 実行方法
 
-1. callbacksフォルダ内に `.env` ファイルを作成して `OPENAI_API_KEY` を記述してください。
+1. `.env` ファイルを作成して `OPENAI_API_KEY` を記述してください。
 
 ```
 OPENAI_API_KEY="YOUR_API_KEY"
 ```
 
-2. callbacksフォルダに移動したのち、`Dockerfile` を使用してビルドします。
+2. `Dockerfile` を使用してビルドします。
 
 ```bash
 docker build -t callbacks .
@@ -29,7 +29,7 @@ docker run -it --rm -v "%cd%":/home/user/app callbacks /bin/bash
 4. 所望のスクリプトを実行してください。
 
 ```bash
-python 1_callbacks_runtime.py
+python callbacks_runtime.py
 ```
 
 5. 終了する際は`exit`を入力してください
@@ -41,7 +41,7 @@ exit
 ## ソースコード
 
 ### 1. 実行時にcallbacksを渡す方法
-ファイル名: `1_callbacks_runtime.py`
+[callbacks_runtime.py](callbacks_runtime.py)
 
 `invoke` 時にcallbacksを渡す方法です。`Agent`に渡すと、`Agent`自体のみでなく、関連するツールやLLMにもコールバックが使用されます。
 
@@ -54,7 +54,7 @@ chain.invoke({"number": "2"}, config={"callbacks": callbacks})
 [How to pass callbacks in at runtime](https://python.langchain.com/docs/how_to/callbacks_runtime/)
 
 ### 2. callbackをRunnableにアタッチする方法
-ファイル名: `2_callbacks_attach.py`
+[callbacks_attach.py](callbacks_attach.py)
 
 `.with_config()`メソッドを使ってRunnableにアタッチする方法です。`invoke`時に毎回callbackを渡す手間がなくなります。
 
@@ -68,7 +68,7 @@ chain_with_callbacks.invoke({"number": "2"})
 [How to attach callbacks to a runnable](https://python.langchain.com/docs/how_to/callbacks_attach/)
 
 ### 3. コンストラクタに渡す方法
-ファイル名: `3_callbacks_constructor.py`
+[callbacks_constructor.py](callbacks_constructor.py)
 
 ```python
 llm = ChatOpenAI(
@@ -96,7 +96,7 @@ Chat model ended, response: generations=[(omitted)] llm_output={(omitted)} run=N
 [How to propagate callbacks constructor](https://python.langchain.com/docs/how_to/callbacks_constructor/)
 
 ### 4. callbacksを自作する
-ファイル名: `4_custom_callbacks.py`
+[custom_callbacks.py](custom_callbacks.py)
 
 ```python
 class MyCustomHandler(BaseCallbackHandler):
@@ -126,7 +126,7 @@ BaseCallbackHandlerがサポートするメソッドは以下を参照。
 参考：[How to create custom callback handlers](https://python.langchain.com/docs/how_to/custom_callbacks/)
 
 ### 5. 非同期処理にコールバックを使う方法
-ファイル名: `5_callbacks_async.py`
+[callbacks_async.py](callbacks_async.py)
 
 イベントがブロックされるのを防ぐためには`AsyncCallbackHandler`を使うのが良いです。
 ```python
@@ -201,8 +201,7 @@ Hi! I just woke up. Your llm is ending
 参考：[How to use callbacks in async environments](https://python.langchain.com/docs/how_to/callbacks_async/)
 
 ### 6. 自作のイベントをディスパッチする方法
-
-ファイル名: `6_callbacks_custom_events.py`
+[callbacks_custom_events.py](callbacks_custom_events.py)
 
 ```python
 async def example_adispatch_custom_event():

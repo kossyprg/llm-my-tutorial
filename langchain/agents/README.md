@@ -6,7 +6,7 @@ Agentに関するチュートリアルを実行するためのソースファイ
 
 ## 実行方法
 
-1. agentsフォルダ内に `.env` ファイルを作成して環境変数を記述してください。
+1. `.env` ファイルを作成して環境変数を記述してください。
 
 ```
 OPENAI_API_KEY="<your-openai-api-key>"
@@ -22,10 +22,10 @@ LANGCHAIN_API_KEY="<your-langsmith-api-key>"
 LANGCHAIN_PROJECT="agent-tutorial"
 ```
 
-2. agentsフォルダに移動したのち、`Dockerfile` を使用してビルドします。
+2. `Dockerfile` を使用してビルドします。
 
 ```bash
-docker build -t callbacks .
+docker build -t agents .
 ```
 
 3. ビルドしたイメージを実行してください。`-v`オプションでボリュームをマウントすると、ソースコードの修正がコンテナ環境にも反映されます。
@@ -33,13 +33,13 @@ docker build -t callbacks .
 Windows(cmd)の場合
 ```cmd
 REM For Windows(cmd)
-docker run -it --rm -v "%cd%":/home/user/app callbacks /bin/bash
+docker run -it --rm -v "%cd%":/home/user/app agents /bin/bash
 ```
 
 4. 所望のスクリプトを実行してください。
 
 ```bash
-python 01_agent_executor.py
+python agent_executor.py
 ```
 
 5. 終了する際は`exit`を入力してください
@@ -51,7 +51,7 @@ exit
 ## ソースコード
 
 ### 1. AgentExecutor(legacy)
-ファイル名: `01_agent_executor.py`
+[agent_executor.py](agent_executor.py)
 
 `AgentExecutor` を用いたエージェントの実行例です。公式ドキュメントによると、LangGraphへの移行が推奨されています。
 

@@ -48,7 +48,7 @@ exit
 ## ソースコード
 
 ### シンプルなAgentの例
-ファイル名: `simple_agent_example.py`
+[simple_agent_example.py](simple_agent_example.py)
 
 公式ドキュメントの一番最初に掲載されている例です。
 点線はconditional edgeと呼ばれ、ツールが必要な場合は`tools` ノードへ、不要なら `END` ノードに向かいます。
