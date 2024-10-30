@@ -1,6 +1,6 @@
 langchain==0.3.4
-langchain-chroma
-langchain-community
+langchain-chroma==0.1.4
+langchain-community==0.3.3
 langchain-openai==0.2.3
-lark
+lark==1.2.2
 python-dotenv==1.0.1

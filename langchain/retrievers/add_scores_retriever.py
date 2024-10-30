@@ -154,7 +154,7 @@ def main_self_query_retriever():
         ),
     ]
     document_content_description = "Brief summary of a movie"
-    llm = ChatOpenAI(name="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
     class CustomSelfQueryRetriever(SelfQueryRetriever):
         def _get_docs_with_query(
