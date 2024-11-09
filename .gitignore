@@ -3,3 +3,4 @@ env/
 __pycache__/
 *.sqlite3
 cache_embed_model/
+melos_db/
