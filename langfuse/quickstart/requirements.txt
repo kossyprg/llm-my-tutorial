@@ -1,0 +1,4 @@
+langchain==0.3.7
+langfuse==2.53.9
+openai==1.54.3
+python-dotenv==1.0.1
