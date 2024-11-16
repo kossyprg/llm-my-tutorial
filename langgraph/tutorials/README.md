@@ -29,7 +29,6 @@ docker build -t lg-tut .
 
 Windows(cmd)の場合
 ```cmd
-REM For Windows(cmd)
 docker run -it --rm -v "%cd%":/home/user/app lg-tut /bin/bash
 ```
 

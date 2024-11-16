@@ -38,7 +38,6 @@ docker build -t run_melos_program .
 
 Windows(cmd)の場合
 ```cmd
-REM For Windows(cmd)
 docker run -it --rm -v "%cd%":/home/user/app run_melos_program /bin/bash
 ```
 

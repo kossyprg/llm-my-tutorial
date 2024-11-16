@@ -22,7 +22,6 @@ docker build -t callbacks .
 
 Windows(cmd)の場合
 ```cmd
-REM For Windows(cmd)
 docker run -it --rm -v "%cd%":/home/user/app callbacks /bin/bash
 ```
 

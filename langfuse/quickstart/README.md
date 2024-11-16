@@ -28,7 +28,6 @@ docker build -t langfuse-quickstart .
 
 Windows(cmd)の場合
 ```cmd
-REM For Windows(cmd)
 docker run -it --rm -v "%cd%":/home/user/app langfuse-quickstart /bin/bash
 ```
 
