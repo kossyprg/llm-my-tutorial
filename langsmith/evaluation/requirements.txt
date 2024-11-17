@@ -1,4 +1,5 @@
 langsmith==0.1.142
+langchain-openai==0.2.8
 openai==1.54.4
 packaging==24.2
 python-dotenv==1.0.1

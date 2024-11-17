@@ -193,5 +193,40 @@ results = evaluate(
 ![データセットを開いた画面](img/basic_evaluation_process_log1.png)
 
 トレースを有効化しているので、各テスト項目について詳細を確認することができます。
+
 ![トレースの詳細の確認](img/basic_evaluation_process_log2.gif)
+
+### langchain の `Runnable` を評価する方法
+[evaluate_langchain_runnable.py](evaluate_langchain_runnable.py)
+
+参考：[Evaluate a LangChain runnable](https://docs.smith.langchain.com/evaluation/how_to_guides/evaluation/evaluate_llm_application#evaluate-a-langchain-runnable)
+
+データセットの登録は[前節](#基本的なevaluationの流れ)で定義したものを使用します。
+
+`chain.invoke` を `evalute()` に渡せばよいです。データセットの入力のキー名と `chain` の入力変数名を一致させる必要があることに注意してください。ここでは `text` です。詳細は[前節](#基本的なevaluationの流れ)のステップ2を参照してください。
+
+以下はプログラムの要点だけをかいつまんだものです。
+
+```python
+prompt = ChatPromptTemplate.from_messages([
+    ("system", system_prompt),
+    ("user", "{text}") # データセット作成時の入力のキー名と一致しないとエラー。
+])
+
+chain = prompt | chat_model | output_parser
+
+dataset_name = "Positive or negative dataset"
+
+results = evaluate(
+    chain.invoke, # chain.invoke を渡す
+    data=dataset_name,
+    evaluators=[correct_label],
+    experiment_prefix="Positive or negative (langchain runnable)",
+    description="langchainのrunnableを使ってテストを実施しています。",
+)
+```
+
+langchainの `Runnable` を評価した場合、各ステップの詳細も見られます。
+
+![langchainのRunnableを評価した場合はchainの詳細も見られる](img/evaluate_langchain_runnable_log1.png)
 
