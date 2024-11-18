@@ -201,11 +201,11 @@ results = evaluate(
 
 参考：[Evaluate a LangChain runnable](https://docs.smith.langchain.com/evaluation/how_to_guides/evaluation/evaluate_llm_application#evaluate-a-langchain-runnable)
 
-データセットの登録は[前節](#基本的なevaluationの流れ)で定義したものを使用します。
+データセットは[前節](#基本的なevaluationの流れ)で定義したものを使用します。
 
-`chain.invoke` を `evalute()` に渡せばよいです。データセットの入力のキー名と `chain` の入力変数名を一致させる必要があることに注意してください。ここでは `text` です。詳細は[前節](#基本的なevaluationの流れ)のステップ2を参照してください。
+端的には、`chain.invoke` を `evalute()` に渡せばよいです。データセットの入力のキー名と `chain` の入力変数名を一致させる必要があることに注意してください。ここでは `text` です。詳細は[前節](#基本的なevaluationの流れ)のステップ2を参照してください。
 
-以下はプログラムの要点だけをかいつまんだものです。
+以下はプログラムの要点をかいつまんだものです。
 
 ```python
 prompt = ChatPromptTemplate.from_messages([
