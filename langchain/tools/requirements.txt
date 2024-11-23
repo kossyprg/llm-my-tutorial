@@ -2,3 +2,9 @@ langchain==0.3.4
 langchain-openai==0.2.3
 numpy==1.26.4
 python-dotenv==1.0.1
+
+# # tool_results_pass_to_model.py の検証に用いる
+# langchain-core==0.2.15 # <0.2.19
+# langchain==0.2.7
+# langchain-openai==0.1.15
+# python-dotenv==1.0.1

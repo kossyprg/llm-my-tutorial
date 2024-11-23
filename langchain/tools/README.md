@@ -190,7 +190,7 @@ print(res.tool_call_id) # 20241031
 print(res.status)       # success
 ```
 
-### ツールを呼ぶためのChatModelの使い方
+### ChatModelを使ってツールを呼ぶ方法
 
 [tool_calling.py](tool_calling.py)
 
@@ -261,3 +261,102 @@ Langsmith上では以下のように表示されます。
 ![lcmツールとgcdツールが呼ばれた例](img/tool_calling_lcm_and_gcd_called.png)
 
 
+### ChatModelにツールの出力を渡す方法
+
+[tool_results_pass_to_model.py](tool_results_pass_to_model.py)
+
+参考：[How to pass tool outputs to chat models](https://python.langchain.com/docs/how_to/tool_results_pass_to_model/)
+
+ツールを定義して`ChatModel`にバインドします。
+
+```python
+import numpy as np
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+
+@tool
+def gcd(a: int, b: int) -> int:
+    """2つの数の最大公約数を求める"""
+    return np.gcd(a, b)
+
+@tool
+def lcm(a: int, b:int) -> int:
+    """2つの数の最小公倍数を求める"""
+    return np.lcm(a, b)
+
+tools = [gcd, lcm]
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+# ChatModel の bind_tools() メソッドで tool schemas をモデルに渡す
+# コンセプトガイドの (2)Tool Binding に相当
+# Ref https://python.langchain.com/docs/concepts/tool_calling/#key-concepts
+llm_with_tools = llm.bind_tools(tools)
+```
+
+ツール呼び出しを行います。会話履歴を残すため、メッセージを格納するリスト `messages` を定義します。
+
+```python
+query = "9と15の最大公約数は何ですか?"
+ai_msg = llm_with_tools.invoke(query)
+
+messages = [HumanMessage(query)]
+messages.append(ai_msg)
+```
+
+`ChatModel` にツールの実行結果を渡すための `ToolMessage` を取得します。
+
+`langchain-core>=0.2.19` であれば、`tool_call` を入力としてツールを実行することで `ToolMessage` が得られます。
+
+```python
+tools_dict = {"gcd": gcd, "lcm": lcm}
+
+for tool_call in ai_msg.tool_calls:
+    selected_tool = tools_dict[tool_call["name"].lower()]
+    tool_msg = selected_tool.invoke(tool_call) # ツールを実行
+    messages.append(tool_msg)
+```
+
+`langchain-core<0.2.19` の場合は、 `ToolMessage` をこちらで用意する必要があります。
+
+```python
+# langchain-core < 0.2.19 の場合
+for tool_call in ai_msg.tool_calls:
+    selected_tool = tools_dict[tool_call["name"].lower()]
+    tool_result = selected_tool.invoke(tool_call['args']) # ツールを実行
+
+    # ToolMessage を構築する
+    tool_msg = ToolMessage(
+        content=str(tool_result),    # '3'
+        name=tool_call["name"],      # 'gcd'
+        tool_call_id=tool_call["id"] # モデルが生成した id と一致させる必要がある。
+    )
+    messages.append(tool_msg)
+```
+
+`messages` は以下のようになります。ただし、一部のパラメータは省略しています。
+
+```bash
+[HumanMessage(content='9と15の最大公約数は何ですか?', ...), 
+AIMessage(content='', ...), 
+ToolMessage(content='3', name='gcd', tool_call_id='call_U1lfTYOFAxyL5vG0fMYWryy1')]
+```
+
+最後に、ツールの出力結果と合わせて最終出力を生成します。
+
+```python
+final_output = llm_with_tools.invoke(messages)
+print(final_output.content) # 9と15の最大公約数は3です。
+```
+
+このプログラムでは `main()` を実行することで、以下3つのトレースが取得されます。
+
+1. ツールの呼び出し
+2. ツールの実行
+3. ツールの出力結果と合わせた `ChatModel` の実行
+
+![ツールの呼び出し](img/tool_results_pass_to_model_gcd_tool_called.png)
+
+![ツールの実行](img/tool_results_pass_to_model_execute_gcd_tool.png)
+
+![ツールの出力結果と合わせた `ChatModel` の実行](img/tool_results_pass_to_model_final_output.png)
