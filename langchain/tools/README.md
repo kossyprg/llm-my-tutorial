@@ -29,7 +29,7 @@ docker build -t tools .
 
 Windows(cmd)の場合
 ```cmd
-docker run -it --rm -v "%cd%":/home/user/app tools /bin/bash
+docker run -it --rm -v "%cd%":/home/user/app --name tools tools /bin/bash
 ```
 
 4. 所望のスクリプトを実行してください。
@@ -48,6 +48,9 @@ exit
 
 ### Tools の作成方法
 [custom_tools.py](custom_tools.py)
+
+参考：
+[How to create tools](https://python.langchain.com/docs/how_to/custom_tools/)
 
 `tool`デコレータを使う方法がもっとも単純です。
 
@@ -187,5 +190,74 @@ print(res.tool_call_id) # 20241031
 print(res.status)       # success
 ```
 
-参考：
-[How to create tools](https://python.langchain.com/docs/how_to/custom_tools/)
+### ツールを呼ぶためのChatModelの使い方
+
+[tool_calling.py](tool_calling.py)
+
+参考
+- [How to use chat models to call tools (langchain)](https://python.langchain.com/docs/how_to/tool_calling/)
+- [Tool calling (langchain)](https://python.langchain.com/docs/concepts/tool_calling/)
+
+`ChatModel` の `.bind_tools()` メソッドを使うことで tool schemas をモデルに渡すことができます。
+
+```python
+import numpy as np
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+
+@tool
+def gcd(a: int, b: int) -> int:
+    """2つの数の最大公約数を求める"""
+    return np.gcd(a, b)
+
+@tool
+def lcm(a: int, b:int) -> int:
+    """2つの数の最小公倍数を求める"""
+    return np.lcm(a, b)
+
+tools = [gcd, lcm]
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+llm_with_tools = llm.bind_tools(tools)
+```
+
+ツールが実行されることが期待されるクエリを投げます。
+
+```python
+query = "9と15の最大公約数は何ですか?"
+response = llm_with_tools.invoke(query)
+```
+
+`response.tool_calls` にツール呼び出しに関する情報が入っています。ツールを**実行したのではない**ことに注意してください。
+
+```python
+print(f"response.content: {response.content}") # "" 空。ツールを実行するわけではない。
+print(f"response.tool_calls: {response.tool_calls}")
+# [{'name': 'gcd', 
+#   'args': {'a': 9, 'b': 15}, 
+#   'id': 'call_7myafWgwuI5EzGhWP11qzHXa', 
+#   'type': 'tool_call'}]
+```
+
+複数のツールが呼び出されることもあります。
+
+```python
+query = "3と4の最小公倍数と9と15の最大公約数をそれぞれ答えよ"
+response = llm_with_tools.invoke(query)
+print(f"response.content: {response.content}") # ""
+print(f"response.tool_calls: {response.tool_calls}")
+# [{'name': 'lcm', 
+#   'args': {'a': 3, 'b': 4}, 
+#   'id': 'call_CZKo2RlMNULlWTqvhn8Qy9ra', 
+#   'type': 'tool_call'}, 
+#  {'name': 'gcd', 
+#   'args': {'a': 9, 'b': 15}, 
+#   'id': 'call_9ez40fXZma4O1M1mIuLYO6pl', 
+#   'type': 'tool_call'}]
+```
+
+Langsmith上では以下のように表示されます。
+
+![lcmツールとgcdツールが呼ばれた例](img/tool_calling_lcm_and_gcd_called.png)
+
+
