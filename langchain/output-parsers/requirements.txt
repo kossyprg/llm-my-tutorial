@@ -1,0 +1,5 @@
+langchain==0.3.7
+langchain-ollama==0.2.0
+langchain-openai==0.2.9
+ollama==0.3.3 # should be <0.4.0 See also https://github.com/langchain-ai/langchain/issues/28281
+python-dotenv==1.0.1

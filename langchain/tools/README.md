@@ -338,7 +338,7 @@ for tool_call in ai_msg.tool_calls:
 
 ```bash
 [HumanMessage(content='9と15の最大公約数は何ですか?', ...), 
-AIMessage(content='', ...), 
+AIMessage(content='', tool_calls=[{'name': 'gcd', 'args': {'a': 9, 'b': 15}, 'id': 'call_U1lfTYOFAxyL5vG0fMYWryy1', 'type': 'tool_call'}], ...), 
 ToolMessage(content='3', name='gcd', tool_call_id='call_U1lfTYOFAxyL5vG0fMYWryy1')]
 ```
 
