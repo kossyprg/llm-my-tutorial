@@ -36,7 +36,7 @@ docker run -it --rm -v "%cd%":/home/user/app --name output-parsers output-parser
 4. 所望のスクリプトを実行してください。
 
 ```bash
-python custom_retriever.py
+python output_parser_structured.py
 ```
 
 5. 終了する際は`exit`を入力してください
@@ -176,3 +176,53 @@ print(response)
 
 ![](img/output_parser_structured_simple_json_output_parser.png)
 
+### Output Parser を自作する方法
+
+[output_parser_custom.py](output_parser_custom.py)
+
+参考：[How to create a custom Output Parser](https://python.langchain.com/docs/how_to/output_parser_custom/)
+
+方法は2つです。
+
+1. （推奨）`RunnableLambda` あるいは `RunnableGenerator` を使って `chain` につなげる
+2. （非推奨）`BaseOutputParser` あるいは `BaseGenerationOutputParser` を継承する
+
+2の方法は実装量が増えてしまうので非推奨とされています。
+ここでは1の方法のみ説明します。
+
+大文字小文字をひっくり返す `parse()` 関数を定義し、`model` とチェーンでつなげるとパースされます。
+`parse` はただの Python の関数ですが、LCEL記法でつなげることで `RunnableLambda(parse)` で `Runnable` に変換したことと同じになります。
+
+```python
+model = ChatOpenAI(model="gpt-4o")
+
+def parse(ai_message: AIMessage) -> str:
+    """Parse the AI message."""
+    return ai_message.content.swapcase()
+
+# | を使用して parse をつなげた場合、自動的に Runnable(parse) に変換される。
+chain = model | parse
+res = chain.invoke("Just say Hello!", config={"run_name": "simple parse"})
+print(res) # hELLO!
+```
+
+![](img/output_parser_custom_simple_parse.png)
+
+ストリーミング機能を使いたい場合は `RunnableGenerator` を使います。
+
+```python
+from langchain_core.runnables import RunnableGenerator
+
+def streaming_parse(chunks: Iterable[AIMessageChunk]) -> Iterable[str]:
+    for chunk in chunks:
+        yield chunk.content.swapcase()
+
+# ストリーミング機能を維持しながら、カスタム出力パーサーなどのカスタム動作を実装したいときは RunnableGenerator を使う
+streaming_parse = RunnableGenerator(streaming_parse)
+
+chain = model | streaming_parse
+for chunk in chain.stream("tell me about yourself in one sentence"):
+    print(chunk, end="|", flush=True)
+print()
+# |i'M| AN| ai| LANGUAGE| MODEL| CREATED| BY| oPEN|ai|,| DESIGNED| TO| ASSIST| AND| PROVIDE| INFORMATION| ON| A| WIDE| RANGE| OF| TOPICS|.||
+```
