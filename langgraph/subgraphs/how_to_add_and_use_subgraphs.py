@@ -166,7 +166,7 @@ def main_add_node_function():
     ic(res)
 
 if __name__ == "__main__":
-    # main()
+    main()
 
     # 親グラフと全く別のキーを持たせる場合
     main_add_node_function()
