@@ -32,3 +32,33 @@ class BaseCustomCallbackHandler(AsyncCallbackHandler):
         ref_info += f"**リンク**: [{document.metadata['link']}]({document.metadata['link']})\n\n"
         ref_info += f"**類似度スコア**: {document.metadata['score']:.2f}"
         return ref_info
+
+class ChainlitUICallbackHandler(cl.AsyncLangchainCallbackHandler):
+    async def on_retriever_start(
+        self,
+        serialized: dict[str, Any],
+        query: str,
+        *,
+        run_id: UUID,
+        parent_run_id: Optional[UUID] = None,
+        tags: Optional[list[str]] = None,
+        metadata: Optional[dict[str, Any]] = None,
+        name: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        # UI上に何も表示させたくないのでオーバーライドしてしまう
+        print("[on_retriever_start] Do Nothing.")
+        pass
+
+    async def on_retriever_end(
+        self,
+        documents: Sequence[Document],
+        *,
+        run_id: UUID,
+        parent_run_id: Optional[UUID] = None,
+        tags: Optional[list[str]] = None,
+        **kwargs: Any,
+    ) -> None:
+        # UI上に何も表示させたくないのでオーバーライドしてしまう
+        print("[on_retriever_end] Do Nothing.")
+        pass
