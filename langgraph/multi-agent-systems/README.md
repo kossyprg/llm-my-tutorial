@@ -66,3 +66,25 @@ exit
 トレース例を示します。
 
 ![](img/multi-agent-collaboration-trace.png)
+
+### スーパーバイザ付きのマルチエージェント
+
+[agent_supervisor.py](agent_supervisor.py)
+
+参考：[Multi-agent supervisor](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
+
+作成したグラフは以下です。`weather_reporter` は地点の気温を返し、`calculator` は2つの数の平均を求めます。
+
+![](img/agent_supervisor-graph.png)
+
+`create_react_agent` で作成した各エージェントの内部を展開すると以下になります。
+
+![](img/agent_supervisor-graph-detailed.png)
+
+`supervisor` がはじめに `weather_reporter` を呼んで各地の気温を取得します。
+取得した情報は `author = "weather_reporter"` の `HumanMessage` として `messages` に追加されます。
+その後、平均値を計算するために `calculator` を呼びます。
+`calculator` が最終的な回答を出したため、`supervisor` は終了します。
+
+![](img/agent_supervisor-trace.png)
+
