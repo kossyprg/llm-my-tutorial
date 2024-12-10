@@ -108,10 +108,10 @@ def main():
     save_compiled_state_graph(graph, png_filename="img/agent_supervisor-graph-detailed.png", xray=True)
 
     # サブグラフを含むグラフの実行
-    # config = {"run_name": "agent supervisor graph"}
-    # inputs = {"messages": [("user", "東京と北海道の気温を調べてその平均値を求めなさい。")]}
-    # for chunk in graph.stream(inputs, config=config, subgraphs=True):
-    #     ic(chunk)
+    config = {"run_name": "agent supervisor graph"}
+    inputs = {"messages": [("user", "東京と北海道の気温を調べてその平均値を求めなさい。")]}
+    for chunk in graph.stream(inputs, config=config, subgraphs=True):
+        ic(chunk)
     
 
 if __name__ == "__main__":
