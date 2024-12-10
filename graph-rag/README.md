@@ -1,11 +1,6 @@
 ## Graph RAG
 
-Ref: https://ja.wikipedia.org/wiki/サザエさん#主な登場人物・ペット
-
-### 技術要素
-
-- Langgraph の基本構成
-- chainlit における streaming の実装
+Graph RAGに関するチュートリアルです。
 
 ## 実行方法
 
@@ -56,7 +51,9 @@ exit
 
 [graph_rag_sazae.py](graph_rag_sazae.py)
 
-参考：[GraphRAGをわかりやすく解説](https://qiita.com/ksonoda/items/98a6607f31d0bbb237ef)
+参考
+- [GraphRAGをわかりやすく解説](https://qiita.com/ksonoda/items/98a6607f31d0bbb237ef)
 （参照日：2024/12/10）
+- [サザエさん(Wikipedia)](https://ja.wikipedia.org/wiki/サザエさん#主な登場人物・ペット)
 
 文書からNeo4jへグラフデータベースを登録、ユーザの質問文からCypherクエリを生成してRAGに使う流れを確認しています。
