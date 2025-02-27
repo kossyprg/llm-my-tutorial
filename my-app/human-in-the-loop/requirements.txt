@@ -1,0 +1,5 @@
+chainlit
+langchain
+langchain-openai
+langgraph>=0.2.57 # https://langchain-ai.github.io/langgraph/concepts/human_in_the_loop/
+python-dotenv
