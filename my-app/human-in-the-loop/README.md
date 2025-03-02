@@ -31,7 +31,7 @@ Linuxの場合
 docker run -it --rm -v "$(pwd)":/home/user/app -p 8000:8000 cl-hitl-app /bin/bash
 ```
 
-4. app.py を実行し、[http://localhost:80what00/](http://localhost:8000/) にアクセスしてください。
+4. app.py を実行し、[http://localhost:8000/](http://localhost:8000/) にアクセスしてください。
 
 ```bash
 chainlit run app.py --host 0.0.0.0
